@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>实时天气情况</title>
+    </head>
+    <body>
+        <h1>查询天气预报</h1>
+        <h2>{{location}}的温度是{{temp}}度，天气情况：{{desc}}</h2>
+        <!-- <script src="static//jquery-3.7.1.min.js"></script>
+        <script>
+            let date = new Date()
+            console.log(date.toString())
+            date.setTime(date.getTime()+1000*1000)
+            document.cookie = `toeken=abc,expires=${date.toString()}`
+
+
+            $(function(){
+                // alert('已加载Jquery')
+                $('#b1').click(function(){
+                    var query = $('#t1').val()
+
+                    $.ajax({
+                        // url:`/get_data?loc=${query}`,
+                        // method:'GET',
+                        url:`/post_data`,
+                        method:'POST',
+                        data :JSON.stringify({'loc':query}),
+                        contentType:'application/json',
+                        success:function(data){
+                            // console.log(data)
+                            weather_data = JSON.parse(data)
+                            loc = weather_data['data']['name']
+                            temp = weather_data['data']['temp']
+                            desc = weather_data['data']['desc']
+                            display_h1 = `${loc}的温度是${temp}度，天气情况：${desc}`
+                            $('h2').text(display_h1)
+                        }
+                    })
+                })
+            })
+        </script> -->
+
+        <script src="static//axios.min.js"></script>
+        <script>
+            axios.interceptors.request.use(function(config){
+                console.log('拦截发送的数据:',config)
+                //加密处理
+                return config
+            })
+
+            axios.interceptors.response.use(function(res){
+                console.log('拦截返回的数据:',res)
+                //解密处理
+                return res
+            })
+
+
+            window.onload = function(){
+                document.getElementById('b1').addEventListener('click',function(){
+                    axios.get('/axios').then(function(res){
+                        console.log(res.data)
+                    }) 
+                })
+            }
+        </script>
+
+        <br><br><input id="t1" placeholder="请输入要查询的城市名称："><button id="b1">查询天气预报</button>
+    </body>
+</html>
